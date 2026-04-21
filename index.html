@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>수선소</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #111111;
+      --white: #ffffff;
+      --gray-100: #f5f5f5;
+      --gray-200: #e5e5e5;
+      --gray-400: #999999;
+      --gray-600: #555555;
+      --font-main: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-main);
+      color: var(--black);
+      background: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      height: 64px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 0.5; }
+
+    .nav-contact {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--black);
+      border: none;
+      padding: 10px 22px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .nav-contact:hover { opacity: 0.7; }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      padding: 160px 60px 100px;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .hero-label, .hero-title {
+      position: relative;
+      z-index: 1;
+      color: var(--white);
+    }
+
+    .hero-label {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 28px;
+    }
+
+    .hero-title {
+      font-size: clamp(48px, 7vw, 88px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--white);
+    }
+
+    /* ── PHILOSOPHY ── */
+    #philosophy {
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+      min-height: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 60px;
+    }
+
+    .philosophy-shapes {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .shape {
+      position: absolute;
+      background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+      transform-origin: center;
+    }
+
+    .shape-1 {
+      width: 500px; height: 500px;
+      top: -150px; right: -80px;
+      transform: rotate(25deg);
+      background: linear-gradient(135deg, #333, #1a1a1a);
+      clip-path: polygon(30% 0%, 100% 0%, 70% 100%, 0% 100%);
+    }
+
+    .shape-2 {
+      width: 300px; height: 300px;
+      bottom: -80px; left: 5%;
+      transform: rotate(-15deg);
+      background: linear-gradient(135deg, #2a2a2a, #111);
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    }
+
+    .shape-3 {
+      width: 200px; height: 600px;
+      top: 0; right: 15%;
+      transform: rotate(8deg);
+      background: linear-gradient(180deg, #3a3a3a 0%, transparent 100%);
+      clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+    }
+
+    .philosophy-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .philosophy-label {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 32px;
+    }
+
+    .philosophy-title {
+      font-size: clamp(22px, 3.5vw, 40px);
+      font-weight: 700;
+      line-height: 1.5;
+      letter-spacing: -0.02em;
+      color: var(--white);
+    }
+
+    /* ── BUSINESS ── */
+    #business {
+      padding: 120px 60px;
+    }
+
+    .section-label {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 80px;
+    }
+
+    .business-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+
+    .business-item.reverse { direction: rtl; }
+    .business-item.reverse > * { direction: ltr; }
+
+    .business-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      background: var(--gray-200);
+      display: block;
+      position: relative;
+      overflow: hidden;
+      border-radius: 9px;
+      transition: transform 0.4s ease, filter 0.4s ease;
+    }
+
+    .business-img:hover {
+      transform: scale(1.04);
+      filter: brightness(1.1) saturate(1.2);
+    }
+
+    .img-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, #d0d0d0, #a0a0a0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .img-placeholder svg {
+      width: 48px;
+      height: 48px;
+      opacity: 0.3;
+    }
+
+    /* Clothing rack image */
+    .img-rack { background: linear-gradient(135deg, #c8c8c8 0%, #888 40%, #666 100%); }
+    .img-fabric { background: linear-gradient(135deg, #aaa 0%, #777 50%, #555 100%); }
+    .img-thread { background: linear-gradient(135deg, #999 0%, #666 50%, #444 100%); }
+
+    .business-num {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--gray-400);
+      margin-bottom: 12px;
+    }
+
+    .business-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .business-sub {
+      font-size: 16px;
+      color: var(--gray-600);
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .business-desc {
+      font-size: 14px;
+      color: var(--gray-600);
+      line-height: 1.8;
+      max-width: 480px;
+    }
+
+    /* ── PROCESS ── */
+    #process {
+      position: relative;
+      background: var(--black);
+      color: var(--white);
+      padding: 120px 60px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    #process::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('5.png') center/cover no-repeat;
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    #process > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .process-title {
+      font-size: clamp(32px, 5vw, 60px);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .process-sub {
+      font-size: 10px;
+      color: var(--gray-400);
+      margin-top: 32px;
+      margin-bottom: 80px;
+      letter-spacing: 0.05em;
+    }
+
+    .process-label {
+      font-size: 17px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 40px;
+    }
+
+    .process-steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 20px;
+    }
+
+    .step-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .step-text {
+      font-size: 18px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .step-arrow {
+      color: var(--gray-400);
+      font-size: 18px;
+      padding: 0 8px;
+    }
+
+    /* ── CYCLE PROCESS ── */
+    #cycle {
+      padding: 60px 60px;
+      text-align: center;
+      background: var(--white);
+    }
+
+    #cycle::after {
+      content: '';
+      display: block;
+      width: 80%;
+      margin: 60px auto 0;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    /* ── REMAKE ── */
+    #remake {
+      padding: 120px 60px 60px;
+      text-align: center;
+    }
+
+    .remake-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 60px;
+    }
+
+    .remake-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .remake-card {
+      border: 1px solid var(--gray-200);
+      padding: 40px 32px;
+      text-align: left;
+      border-radius: 9px;
+    }
+
+    .remake-img-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: 9px;
+      margin-bottom: 24px;
+    }
+
+    .remake-arrow {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 32px;
+      color: var(--white);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .remake-img-wrap:hover .remake-arrow {
+      opacity: 1;
+    }
+
+    .remake-img-wrap:hover .remake-card-img {
+      filter: brightness(0.6) contrast(1.4);
+    }
+
+    .remake-card-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+      transition: filter 0.4s ease;
+    }
+
+    .remake-card-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .remake-card-desc {
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.8;
+    }
+
+    /* ── TRUST ── */
+    #trust {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 480px;
+      padding: 0 60px;
+    }
+
+    .trust-img {
+      background: linear-gradient(135deg, #bbb 0%, #777 50%, #444 100%);
+      min-height: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 9px;
+    }
+
+    .trust-content {
+      padding: 80px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .trust-label {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 24px;
+    }
+
+    .trust-title {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .trust-desc {
+      font-size: 14px;
+      color: var(--gray-600);
+      line-height: 1.9;
+    }
+
+    /* ── SERVICE ── */
+    #service {
+      padding: 120px 60px;
+      text-align: center;
+    }
+
+    .service-label {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 20px;
+    }
+
+    .service-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 60px;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .service-card {
+      position: relative;
+    }
+
+    .service-img-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: 9px;
+    }
+
+    .service-card-img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      display: block;
+      opacity: 0.5;
+      transition: opacity 0.4s ease;
+    }
+
+    .service-img-wrap:hover .service-card-img {
+      opacity: 1;
+      filter: brightness(0.5);
+    }
+
+    .service-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--black);
+      border-radius: 9px;
+      margin-top: 12px;
+    }
+
+    .service-card-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .service-card-btn {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--gray-400);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .service-card-btn:hover { color: var(--white); }
+
+    .service-hover-name { display: none; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      color: var(--white);
+      padding: 60px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--white); }
+
+    .footer-copy {
+      font-size: 11px;
+      color: var(--gray-600);
+    }
+
+    .hero-line, .phil-line {
+      transition: color 0.5s ease;
+    }
+    .line1 { color: var(--white); }
+    .line2 { color: rgba(255,255,255,0.35); }
+    .hero-title.scrolled .line1 { color: rgba(255,255,255,0.35); }
+    .hero-title.scrolled .line2 { color: var(--white); }
+
+
+    /* ── DECORATIVE SVG IMAGES ── */
+    .rack-svg, .fabric-svg, .thread-svg, .trust-svg {
+      width: 100%;
+      height: 100%;
+      min-height: 300px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">수선소</a>
+    <ul class="nav-links">
+      <li><a href="#philosophy">Philosophy</a></li>
+      <li><a href="#business">Our Business</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#service">Service</a></li>
+    </ul>
+    <button class="nav-contact">Contact</button>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <h5 class="hero-label">Circular Fashion</h5>
+    <h1 class="hero-title">
+      <span class="hero-line line1">입는 즐거움부터</span><br>
+      <span class="hero-line line2">다시 쓰이는 아름다움까지</span>
+    </h1>
+    <img src="0.png" alt="수선소" class="hero-img" />
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section id="philosophy">
+    <div class="philosophy-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="philosophy-content">
+      <p class="philosophy-label">Philosophy</p>
+      <h2 class="philosophy-title">
+        좋은 옷을 고르는 일만큼,<br>
+        입지 않는 옷을 잘 처리하는 것도 중요합니다.
+      </h2>
+    </div>
+  </section>
+
+  <!-- OUR BUSINESS -->
+  <section id="business">
+    <p class="section-label">Our Business</p>
+
+    <!-- 01 수선소 -->
+    <div class="business-item">
+      <img src="2.png" alt="수선소" class="business-img" />
+      <div>
+        <p class="business-num">01</p>
+        <h3 class="business-title">수선소</h3>
+        <h4 class="business-sub">오프라인 편집샵</h4>
+        <p class="business-desc">
+          잘 편집된 옷과 잘 보내진 옷이 만나는 공간입니다.<br>
+          판매와 수거가 한 곳에서 이루어지는, 순환을 직접 경험할 수 있는 편집샵입니다.
+        </p>
+      </div>
+    </div>
+
+    <!-- 02 수선소 Cycle -->
+    <div class="business-item reverse">
+      <img src="3.png" alt="수선소 Cycle" class="business-img" />
+      <div>
+        <p class="business-num">02</p>
+        <h3 class="business-title">수선소 Cycle</h3>
+        <h4 class="business-sub">판매 & 수거 서비스</h4>
+        <p class="business-desc">
+          브랜드의 친환경 기준으로 큐레이션된 의류,<br>
+          폐의류를 리사이클 하여 만든 자체 라이프스타일 브랜드,<br>
+          빈티지 라인을 한 공간에서 만나볼 수 있습니다.<br>
+          더불어 온/오프라인 에서 더 이상 입지 않는 옷을<br> 
+          회수 받고, 이에 대한 크레딧을 제공합니다. 
+        </p>
+      </div>
+    </div>
+
+    <!-- 03 수선소 LAB -->
+    <div class="business-item">
+      <img src="4.png" alt="수선소 LAB" class="business-img" />
+      <div>
+        <p class="business-num">03</p>
+        <h3 class="business-title">수선소 LAB</h3>
+        <h4 class="business-sub">LAB을 통한 의류 순환 기술 연구</h4>
+        <p class="business-desc">
+          블록체인 기술을 활용해 수거된 옷이 어디서부터 출발해 어디로 가는지 추적합니다.<br>
+          소재 분리 분야의 파트너 효성티앤씨 리젠 T2T 와 협력해 더 나은  순환 기술을 연구합니다.<br>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <h2 class="process-title">
+      수선소에 오는 순간,<br>
+      옷은 각자에게 맞는 순환 경로를 만납니다.
+    </h2>
+  </section>
+
+  <!-- REMAKE -->
+  <section id="remake">
+    <h2 class="remake-title">수거된 옷은 세 가지 방식으로 순환합니다.</h2>
+    <div class="remake-grid">
+      <div class="remake-card">
+        <div class="remake-img-wrap">
+          <img src="6.png" alt="PB Soft" class="remake-card-img" />
+          <span class="remake-arrow">→</span>
+        </div>
+        <h3 class="remake-card-title">업사이클링 라이프스타일 브랜드</h3>
+        <p class="remake-card-desc">
+          해체와 재조합을 통해 새로운 형태로 재탄생한<br>
+          업사이클링 제품입니다. 버려질 옷에 새로운 쓰임과 가치를 더합니다.<br>
+
+        </p>
+      </div>
+      <div class="remake-card">
+        <div class="remake-img-wrap">
+          <img src="7.png" alt="PB Hard" class="remake-card-img" />
+          <span class="remake-arrow">→</span>
+        </div>
+        <h3 class="remake-card-title">빈티지 라인</h3>
+        <p class="remake-card-desc">
+          회수된 옷은 선별되어 다시 사용 가능한<br>
+          상태로 순환욉니다. 시간의 흔적을 담은 채,<br>
+          다시 일상으로 돌아갑니다.
+        </p>
+      </div>
+      <div class="remake-card">
+        <div class="remake-img-wrap">
+          <img src="8.png" alt="빈티지" class="remake-card-img" />
+          <span class="remake-arrow">→</span>
+        </div>
+        <h3 class="remake-card-title">친환경적인 소각</h3>
+        <p class="remake-card-desc">
+          사용이 어려운 의류를<br>
+          합격을 고려한 방식으로 처리됩니다.<br>
+          마지막까지 책임있는 방식으로 정리됩니다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CYCLE PROCESS -->
+  <section id="cycle">
+    <p class="process-label">회수는 이런 과정을 거쳐 진행됩니다.</p>
+    <div class="process-steps">
+      <div class="step">
+        <span class="step-text">옷 챙기기</span>
+      </div>
+      <span class="step-arrow">→</span>
+      <div class="step">
+        <span class="step-text">매장 방문</span>
+      </div>
+      <span class="step-arrow">→</span>
+      <div class="step">
+        <span class="step-text">건네기</span>
+      </div>
+      <span class="step-arrow">→</span>
+      <div class="step">
+        <span class="step-text">포인트 적립</span>
+      </div>
+    </div>
+    <p class="process-sub">한벌 당 최대 1,000P 즉시 적립</p>
+  </section>
+
+  <!-- TRUST -->
+  <section id="trust">
+    <div class="trust-img">
+      <img src="9.png" alt="보이는 기준" style="width:100%;height:100%;object-fit:cover;display:block;" />
+    </div>
+    <div class="trust-content">
+      <p class="trust-label">검증 프로세스</p>
+      <h2 class="trust-title">보이는 기준,<br>믿을 수 있는 선택</h2>
+      <p class="trust-desc">
+        옷의 정보를 넘어, 그 옷이 지나온 과정을 확인하세요.<br>
+        모든 순환 제품에는 수선소만의 자체 검수 태그(Tag)가 부착됩니다. 
+        이 테그는 제품의 이전 이력, 수선 정도, 소재 구성 비율을 투명하게 공개하는 보증서 역할을 합니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- SERVICE -->
+  <section id="service">
+    <p class="service-label">WE HAVE</p>
+    <h2 class="service-title">이런 제품이 기다리고 있어요</h2>
+    <div class="service-grid">
+      <div class="service-card">
+        <div class="service-img-wrap">
+          <img src="10.png" alt="빈티지" class="service-card-img" />
+          <span class="service-hover-name">빈티지 라인</span>
+        </div>
+        <div class="service-card-footer">
+          <span class="service-card-name">빈티지</span>
+          <button class="service-card-btn">자세히 보기 →</button>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-img-wrap">
+          <img src="11.png" alt="업사이클링 라이프스타일 브랜드" class="service-card-img" />
+          <span class="service-hover-name">업사이클링<br>라이프스타일 브랜드</span>
+        </div>
+        <div class="service-card-footer">
+          <span class="service-card-name">업사이클링 라이프스타일 브랜드</span>
+          <button class="service-card-btn">자세히 보기 →</button>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-img-wrap">
+          <img src="12.png" alt="친환경 큐레이션" class="service-card-img" />
+          <span class="service-hover-name">친환경 큐레이션</span>
+        </div>
+        <div class="service-card-footer">
+          <span class="service-card-name">친환경 큐레이션</span>
+          <button class="service-card-btn">자세히 보기 →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <p class="footer-logo">수선소</p>
+      <p class="footer-copy" style="margin-top:12px">© 2026 수선소. All rights reserved.</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#">Our Business</a></li>
+      <li><a href="#">Philosophy</a></li>
+      <li><a href="#">Process</a></li>
+      <li><a href="#">Service</a></li>
+    </ul>
+    <p class="footer-copy">수선소 2026</p>
+  </footer>
+
+  <script>
+    const heroTitle = document.querySelector('.hero-title');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 80) {
+        heroTitle.classList.add('scrolled');
+      } else {
+        heroTitle.classList.remove('scrolled');
+      }
+    });
+  </script>
+</body>
+</html>
