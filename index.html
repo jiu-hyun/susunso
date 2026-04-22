@@ -637,6 +637,55 @@
     .hero-title.scrolled .line2 { color: var(--white); }
 
 
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 24px;
+      }
+      .nav-links { display: none; }
+
+      #hero { padding: 120px 24px 60px; }
+
+      #philosophy { padding: 60px 24px; }
+
+      #business { padding: 60px 24px; }
+      .business-item {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .business-item.reverse { direction: ltr; }
+
+      #process { padding: 80px 24px; }
+      .process-title { font-size: 28px; }
+      .process-steps { flex-direction: column; gap: 12px; }
+      .step-arrow { transform: rotate(90deg); }
+
+      #cycle { padding: 40px 24px; }
+
+      #remake { padding: 60px 24px; }
+      .remake-grid { grid-template-columns: 1fr; }
+
+      #trust {
+        grid-template-columns: 1fr;
+        padding: 0 24px;
+      }
+      .trust-img { min-height: 300px; }
+      .trust-content { padding: 40px 0; }
+
+      #service { padding: 60px 24px; }
+      .service-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 32px;
+        padding: 40px 24px;
+      }
+      .footer-links { flex-wrap: wrap; gap: 20px; }
+    }
+
     /* ── DECORATIVE SVG IMAGES ── */
     .rack-svg, .fabric-svg, .thread-svg, .trust-svg {
       width: 100%;
